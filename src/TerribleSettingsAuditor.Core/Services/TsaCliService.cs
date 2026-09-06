@@ -116,6 +116,7 @@ public class TsaCliService : ITsaCliService
         Console.WriteLine("👮 Terrible Settings Auditor (TSA)");
         Console.WriteLine("tsa --help                Show help info");
         Console.WriteLine("tsa --screen              Ensures all configuration and settings are present.");
+        Console.WriteLine("tsa --health              Runs health checks tagged \"tsa\" (--tag <name>, --all-tags, --json, --strict).");
         //Console.WriteLine("tsa --generate          Creates a scaffolded tsa.json configuration file for TSA settings.");
         Console.WriteLine("tsa --joke                On the house — courtesy of your flight.");
     }

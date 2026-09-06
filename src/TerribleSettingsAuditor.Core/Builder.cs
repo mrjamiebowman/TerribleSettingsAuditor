@@ -213,6 +213,45 @@ public static class Builder
         }
 
         /****************************************/
+        /*             health checks            */
+        /****************************************/
+
+        // tsa: health
+        if (args[0] == "tsa" && (args[1] == "--health" || args[1] == "--health-check" || args[1] == "-hc"))
+        {
+            var hcArgs = args.Skip(2).ToArray();
+
+            var healthOptions = new HealthScreeningOptions
+            {
+                AllTags = hcArgs.Any(x => x.Equals("--all-tags", StringComparison.OrdinalIgnoreCase)),
+                Json = hcArgs.Any(x => x.Equals("--json", StringComparison.OrdinalIgnoreCase)),
+                Strict = hcArgs.Any(x => x.Equals("--strict", StringComparison.OrdinalIgnoreCase)),
+                Quiet = optionQuiet,
+                NoAbort = optionNoAbort,
+            };
+
+            // --tag <name> (repeatable); when omitted the default "tsa" tag is used
+            var tags = new List<string>();
+            for (int i = 0; i < hcArgs.Length - 1; i++)
+            {
+                if (hcArgs[i].Equals("--tag", StringComparison.OrdinalIgnoreCase))
+                {
+                    tags.Add(hcArgs[i + 1]);
+                }
+            }
+
+            if (tags.Count > 0)
+            {
+                healthOptions.Tags = tags;
+            }
+
+            // renders the report and (unless --no-abort) sets the process exit code
+            await tsa.ProcessHealthChecksAsync(app.ApplicationServices, healthOptions, cancellationToken);
+
+            return;
+        }
+
+        /****************************************/
         /*               validation             */
         /****************************************/
 

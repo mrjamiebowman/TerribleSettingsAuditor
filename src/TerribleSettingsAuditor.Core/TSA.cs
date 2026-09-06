@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using System.Text.Json;
 using TerribleSettingsAuditor.Abstractions.Attribute;
 using TerribleSettingsAuditor.Core.Configuration;
 using TerribleSettingsAuditor.Core.Helpers;
@@ -230,45 +231,49 @@ public class TSA : ITSA
         return screeningReport;
     }
 
-    #region private methods
-
-    public Task ProcessHealthChecks(IServiceProvider serviceProvider)
+    /// <summary>
+    ///  Runs the ASP.NET Core health checks registered in DI, filtered by tag, without starting the web host.
+    ///  Intended for CI/CD: renders a report and (unless <see cref="HealthScreeningOptions.NoAbort"/>) sets the
+    ///  process exit code — 0 when healthy, 1 when unhealthy (or degraded with <see cref="HealthScreeningOptions.Strict"/>).
+    /// </summary>
+    public async Task<HealthReport> ProcessHealthChecksAsync(IServiceProvider serviceProvider, HealthScreeningOptions? options, CancellationToken cancellationToken = default)
     {
-        var hcService = app.ApplicationServices.GetService(typeof(HealthCheckService)) as HealthCheckService;
+        options ??= new HealthScreeningOptions();
+
+        var hcService = serviceProvider.GetService(typeof(HealthCheckService)) as HealthCheckService;
+
         if (hcService is null)
         {
             CLI.WriteLineRed("❌ No health checks registered. Call services.AddHealthChecks() in Program.cs.");
             Environment.Exit(1);
+            return null!;
         }
 
-        // tags: default to "tsa", allow --tag <name> (repeatable), or --all-tags
-        var rest = args.Skip(2).ToArray();
-        bool allTags = rest.Any(x => x.Equals("--all-tags", StringComparison.OrdinalIgnoreCase));
-        bool strict = rest.Any(x => x.Equals("--strict", StringComparison.OrdinalIgnoreCase));
-        bool json = rest.Any(x => x.Equals("--json", StringComparison.OrdinalIgnoreCase));
-
-        var tags = new List<string>();
-        for (int i = 0; i < rest.Length - 1; i++)
-            if (rest[i].Equals("--tag", StringComparison.OrdinalIgnoreCase))
-                tags.Add(rest[i + 1]);
-        if (tags.Count == 0) tags.Add("tsa");
-
-        Func<HealthCheckRegistration, bool>? predicate =
-            allTags ? null : (reg => reg.Tags.Any(t => tags.Contains(t, StringComparer.OrdinalIgnoreCase)));
+        // tag filter (null predicate = run every registered check)
+        Func<HealthCheckRegistration, bool>? predicate = options.AllTags
+            ? null
+            : reg => reg.Tags.Any(t => options.Tags.Contains(t, StringComparer.OrdinalIgnoreCase));
 
         HealthReport report;
+
         try
         {
             report = await hcService.CheckHealthAsync(predicate, cancellationToken);
         }
         catch (Exception ex)
         {
+            _logger.LogError(ex, "Health check run failed.");
             CLI.WriteLineRed($"❌ Health check run failed: {ex.Message}");
             Environment.Exit(1);
-            return;
+            return null!;
         }
 
-        if (json)
+        if (report.Entries.Count == 0 && !options.AllTags)
+        {
+            CLI.WriteLinLineYellow($"⚠️  No health checks matched tag(s): {string.Join(", ", options.Tags)}");
+        }
+
+        if (options.Json)
         {
             Console.WriteLine(JsonSerializer.Serialize(new
             {
@@ -286,7 +291,7 @@ public class TSA : ITSA
         }
         else
         {
-            if (!screeningOptions.Quiet)
+            if (!options.Quiet)
                 TsaCliService.ShowBlock(" 🩺 Health Check Report");
 
             foreach (var entry in report.Entries)
@@ -294,21 +299,29 @@ public class TSA : ITSA
                 var icon = entry.Value.Status == HealthStatus.Healthy ? CLI.Icons.Success
                          : entry.Value.Status == HealthStatus.Degraded ? CLI.Icons.Warning
                          : CLI.Icons.Failure;
-                Console.WriteLine($"{icon} {entry.Key}: {entry.Value.Status} " +
-                                  $"({entry.Value.Duration.TotalMilliseconds:0} ms) {entry.Value.Description}");
+
+                Console.WriteLine($"{icon} {entry.Key}: {entry.Value.Status} ({entry.Value.Duration.TotalMilliseconds:0} ms) {entry.Value.Description}");
+
                 if (entry.Value.Exception != null)
                     CLI.WriteLineRed($"    {entry.Value.Exception.Message}");
             }
+
             Console.WriteLine("");
             Console.WriteLine($"Overall: {report.Status}");
         }
 
-        if (screeningOptions.NoAbort) return;
+        if (options.NoAbort)
+            return report;
 
-        bool ok = report.Status == HealthStatus.Healthy || (report.Status == HealthStatus.Degraded && !strict);
+        bool ok = report.Status == HealthStatus.Healthy
+               || (report.Status == HealthStatus.Degraded && !options.Strict);
 
         Environment.Exit(ok ? 0 : 1);
+
+        return report;
     }
+
+    #region private methods
 
     public Task<List<ConfigurationEntry>> GetConfigurationsAsync(IServiceProvider serviceProvider, Assembly[] assemblies, CancellationToken cancellationToken = default)
     {
