@@ -6,9 +6,9 @@
     <Nullable>enable</Nullable>
 	<LangVersion>Latest</LangVersion>
 	<Copyright>2026</Copyright>
-	<PackageProjectUrl>https://github.com/mrjamiebowman/tsa</PackageProjectUrl>
+	<PackageProjectUrl>https://github.com/mrjamiebowman/TerribleSettingsAuditor</PackageProjectUrl>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
-	<RepositoryUrl>https://github.com/mrjamiebowman/tsa</RepositoryUrl>
+	<RepositoryUrl>https://github.com/mrjamiebowman/TerribleSettingsAuditor</RepositoryUrl>
 	<RepositoryType>git</RepositoryType>
 	<PackageTags>Configuration;Pipelines;CICD;Testing</PackageTags>
   </PropertyGroup>

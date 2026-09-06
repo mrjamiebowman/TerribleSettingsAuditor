@@ -100,7 +100,7 @@ public class TsaCliService : ITsaCliService
         CLI.WriteLineGreen(@"");
         CLI.WriteLineGreen("Terrible Settings Auditor is an independent developer tool and is not affiliated with or endorsed by the Transportation Security Administration.");
         ShowLogo();
-        CLI.WriteLinLineYellow("https://github.com/mrjamiebowman/tsa");
+        CLI.WriteLinLineYellow("https://github.com/mrjamiebowman/TerribleSettingsAuditor");
         Console.WriteLine("");
     }
 
