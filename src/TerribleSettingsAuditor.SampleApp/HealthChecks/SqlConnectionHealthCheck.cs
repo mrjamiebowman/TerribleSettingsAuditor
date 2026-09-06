@@ -27,7 +27,6 @@ public sealed class SqlConnectionHealthCheck : IHealthCheck
     {
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
         cts.CancelAfter(_timeout);
-
         var start = TimeSpan.FromMilliseconds(Environment.TickCount64);
 
         try
