@@ -5,7 +5,7 @@ using TerribleSettingsAuditor.SampleApp.Domain.Configuration;
 namespace TerribleSettingsAuditor.SampleApp.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ApplicationController : ControllerBase
 {
     // logger

@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
-using TerribleSettingsAuditor.SampleApp.Domain.Configuration;
 using TerribleSettingsAuditor.Core;
+using TerribleSettingsAuditor.SampleApp.Domain.Configuration;
+using TerribleSettingsAuditor.SampleApp.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,18 @@ builder.Services.Configure<ApplicationOptions>(builder.Configuration.GetSection(
 builder.Services.Configure<BadConfiguration>(builder.Configuration.GetSection(BadConfiguration.Position));
 
 /****************************************/
+/*            health checks             */
+/****************************************/
+
+builder.Services
+    .AddHealthChecks()
+    .AddCheck(
+        "sql",
+        new SqlConnectionHealthCheck(databaseConfiguration.ConnectionStringSampleApp, timeout: TimeSpan.FromSeconds(3)),
+        failureStatus: HealthStatus.Unhealthy,
+        tags: new[] { "tsa", "db", "ready" });
+
+/****************************************/
 /*                tsa                   */
 /****************************************/
 
@@ -83,6 +97,10 @@ var app = builder.Build();
 // CLI commands always win over settings.
 await app.UseTerribleSettingsAuditorAsync(args);
 
+// health checks
+app.MapHealthChecks("/health");
+
+// scalar
 app.MapOpenApi();
 app.MapScalarApiReference();
 

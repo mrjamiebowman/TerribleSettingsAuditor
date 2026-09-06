@@ -234,6 +234,11 @@ public class TSA : ITSA
     {
         var configurationEntries = new List<ConfigurationEntry>();
 
+        if (assemblies is null)
+        {
+            return Task.FromResult(configurationEntries);
+        }
+
         foreach (var assembly in assemblies)
         {
             if (cancellationToken.IsCancellationRequested)

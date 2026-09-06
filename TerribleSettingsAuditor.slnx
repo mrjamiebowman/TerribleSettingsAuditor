@@ -12,8 +12,8 @@
     <Project Path="src/TerribleSettingsAuditor.Core/TerribleSettingsAuditor.Core.csproj" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="test/MRJB.TSA.Core.Tests.Unit/TerribleSettingsAuditor.Core.Tests.Unit.csproj" />
-    <Project Path="test/MRJB.TSA.Core.Tests/TerribleSettingsAuditor.Core.Tests.csproj" />
+    <Project Path="test/TerribleSettingsAuditor.Core.Tests/TerribleSettingsAuditor.Core.Tests.csproj" />
+    <Project Path="test/TerribleSettingsAuditor.Tests.Unit/TerribleSettingsAuditor.Core.Tests.Unit.csproj" />
   </Folder>
   <Folder Name="/_Solution Items/">
     <File Path=".dockerignore" />
