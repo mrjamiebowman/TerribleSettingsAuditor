@@ -33,6 +33,9 @@ public class TSA : ITSA
         // result
         var screeningReport = new ScreeningReport();
 
+        //// health checks
+        //var resultHc = await ProcessHealthChecksAsync(serviceProvider, null, cancellationToken);
+
         bool pass = true;
 
         // default screening settings
@@ -374,131 +377,131 @@ public class TSA : ITSA
 
     #endregion
 
-    //public async Task<ScreeningReport> ScreenAsync(IServiceProvider serviceProvider, Assembly[] assemblies, Action<ScreeningSettings>? SsreeningSettingsAction = null, CancellationToken cancellationToken = default)
-    //{
-    //    // result
-    //    var screeningReport = new ScreeningReport();
+    public async Task<ScreeningReport> ScreenAsync(IServiceProvider serviceProvider, Assembly[] assemblies, Action<ScreeningOptions>? screeningOptionsAction = null, CancellationToken cancellationToken = default)
+    {
+        // result
+        var screeningReport = new ScreeningReport();
 
-    //    bool pass = true;
+        bool pass = true;
 
-    //    // default screening settings
-    //    ScreeningSettings screeningSettings = new ScreeningSettings();
+        // default screening settings
+        ScreeningOptions screeningOptions = new ScreeningOptions();
 
-    //    if (SsreeningSettingsAction != null)
-    //    {
-    //        SsreeningSettingsAction.Invoke(screeningSettings);
-    //    }
+        if (screeningOptionsAction != null)
+        {
+            screeningOptionsAction.Invoke(screeningOptions);
+        }
 
-    //    // configurations
-    //    List<ConfigurationEntry> configurations = new List<ConfigurationEntry>();
+        // configurations
+        List<ConfigurationEntry> configurations = new List<ConfigurationEntry>();
 
-    //    //// validate
-    //    //var configReport = await _tsaValidator.ValidateAsync();
+        //// validate
+        //var configReport = await _tsaValidator.ValidateAsync();
 
-    //    //var test = "";
+        //var test = "";
 
-    //    // assemblies
-    //    configurations = await GetConfigurationsAsync(serviceProvider, assemblies, cancellationToken);
+        // assemblies
+        configurations = await GetConfigurationsAsync(serviceProvider, assemblies, cancellationToken);
 
-    //    // process configurations
-    //    foreach (var configKey in configurations)
-    //    {
-    //        /**************************************************/
-    //        /*             carry-on (configuration)           */
-    //        /**************************************************/
+        // process configurations
+        foreach (var configKey in configurations)
+        {
+            /**************************************************/
+            /*             carry-on (configuration)           */
+            /**************************************************/
 
-    //        bool configPass = true;
+            bool configPass = true;
 
-    //        var carryOn = new ConfigurationReport()
-    //        {
-    //            Name = configKey.ClassName,
-    //            Namespace = configKey.Namespace
-    //        };
+            var carryOn = new ConfigurationReport()
+            {
+                Name = configKey.ClassName,
+                Namespace = configKey.Namespace
+            };
 
-    //        // resolve config class
-    //        var config = ConfigResolver.ResolveConfig(serviceProvider, configKey.Type);
+            // resolve config class
+            var config = ConfigResolver.ResolveConfig(serviceProvider, configKey.Type);
 
-    //        // not found
-    //        if (config == null)
-    //        {
-    //            throw new ArgumentNullException("Configuration class not found.");
-    //        }
+            // not found
+            if (config == null)
+            {
+                throw new ArgumentNullException("Configuration class not found.");
+            }
 
-    //        var configType = config?.GetType();
+            var configType = config?.GetType();
 
-    //        // carry-on
-    //        var carryOnAttr = configType.GetCustomAttribute<LuggageAttribute>();
+            // carry-on
+            var carryOnAttr = configType.GetCustomAttribute<LuggageAttribute>();
 
-    //        // properties
-    //        var properties = configType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            // properties
+            var properties = configType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-    //        /**************************************************/
-    //        /*                   validation                   */
-    //        /**************************************************/
+            /**************************************************/
+            /*                   validation                   */
+            /**************************************************/
 
-    //        foreach (var prop in properties)
-    //        {
-    //            /**************************************************/
-    //            /*          baggage item (property check)         */
-    //            /**************************************************/
+            foreach (var prop in properties)
+            {
+                /**************************************************/
+                /*          baggage item (property check)         */
+                /**************************************************/
 
-    //            var baggageAttr = prop.GetCustomAttribute<LuggageItemAttribute>();
-    //            var baggageAttrConnectionString = prop.GetCustomAttribute<LuggageItemConnectionStringAttribute>();
+                var baggageAttr = prop.GetCustomAttribute<LuggageItemAttribute>();
+                var baggageAttrConnectionString = prop.GetCustomAttribute<LuggageItemConnectionStringAttribute>();
 
-    //            /**************************************************/
-    //            /*                  validation                    */
-    //            /**************************************************/
+                /**************************************************/
+                /*                  validation                    */
+                /**************************************************/
 
-    //            // validate
-    //            var result = PropertyValidator.ValidateProperty(config, prop.Name);
+                // validate
+                var result = PropertyValidator.ValidateProperty(config, prop.Name);
 
-    //            bool passed = false;
+                bool passed = false;
 
-    //            if (!result.Any())
-    //            {
-    //                passed = true;
-    //            }
-    //            else
-    //            {
-    //                pass = false;
-    //                configPass = false;
-    //            }
+                if (!result.Any())
+                {
+                    passed = true;
+                }
+                else
+                {
+                    pass = false;
+                    configPass = false;
+                }
 
-    //            // message
-    //            string message = string.Join(
-    //                ", ",
-    //                result
-    //                    .Select(r => r.ErrorMessage)
-    //                    .Where(m => !string.IsNullOrWhiteSpace(m)));
+                // message
+                string message = string.Join(
+                    ", ",
+                    result
+                        .Select(r => r.ErrorMessage)
+                        .Where(m => !string.IsNullOrWhiteSpace(m)));
 
-    //            // required
-    //            var required = PropertyValidator.IsRequired(prop) ? true : false;
+                // required
+                var required = PropertyValidator.IsRequired(prop) ? true : false;
 
-    //            // baggage item
-    //            var baggageItem = new ConfigurationPropertyReport()
-    //            {
-    //                BaggageItem = baggageAttr != null ? true : false,
-    //                Name = prop.Name,
-    //                Description = baggageAttr?.Description ?? String.Empty,
-    //                Pass = passed,
-    //                Message = message,
-    //                Required = required
-    //            };
+                // baggage item
+                var baggageItem = new ConfigurationPropertyReport()
+                {
+                    BaggageItem = baggageAttr != null ? true : false,
+                    Name = prop.Name,
+                    Description = baggageAttr?.Description ?? String.Empty,
+                    Pass = passed,
+                    Message = message,
+                    Required = required
+                };
 
-    //            // baggage item
-    //            carryOn.Properties.Add(baggageItem);
-    //        }
+                // baggage item
+                carryOn.Properties.Add(baggageItem);
+            }
 
-    //        // pass or fail
-    //        carryOn.Passed = configPass;
+            // pass or fail
+            carryOn.Passed = configPass;
 
-    //        // configuration
-    //        screeningReport.Configuration.Add(carryOn);
-    //    }
+            // configuration
+            screeningReport.Configuration.Add(carryOn);
+        }
 
-    //    // pass or fail
-    //    screeningReport.Pass = pass;
+        // pass or fail
+        screeningReport.Pass = pass;
 
-    //    return screeningReport;
-    //}
+        return screeningReport;
+    }
 }
