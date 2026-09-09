@@ -230,6 +230,18 @@ public class TSA : ITSA
 
     #region private methods
 
+    private static IEnumerable<Type> GetLoadableTypes(Assembly assembly)
+    {
+        try
+        {
+            return assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException ex)
+        {
+            return ex.Types.Where(t => t != null)!;
+        }
+    }
+
     public Task<List<ConfigurationEntry>> GetConfigurationsAsync(IServiceProvider serviceProvider, Assembly[] assemblies, CancellationToken cancellationToken = default)
     {
         var configurationEntries = new List<ConfigurationEntry>();
@@ -246,8 +258,10 @@ public class TSA : ITSA
                 break;
             }
 
-            var typesWithAttribute = assembly.GetTypes()
-                                             .Where(t => t.IsClass && t.GetCustomAttribute<LuggageAttribute>() != null);
+            // load types
+            var typesWithAttribute = GetLoadableTypes(assembly)
+                                        .Where(t => t.IsClass && t.GetCustomAttribute<LuggageAttribute>() != null)
+                                        .ToList();
 
             foreach (var type in typesWithAttribute)
             {
