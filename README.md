@@ -159,3 +159,13 @@ This is meant to be a paradoy and to make this process fun.
 
 ![Screening Report](.docs/tsa-screen.png) 
 
+
+## ⚖️ Legal Disclaimer & Parody Notice
+
+**Terrible Settings Auditor (TSA)** is a developer tool, an educational experiment, and a work of parody. 
+
+* **No Affiliation:** This project is completely independent. It is not affiliated with, endorsed by, sponsored by, or associated with the U.S. Department of Homeland Security, the Transportation Security Administration, any federal or state government agency, or any commercial airline.
+
+* **Purely Satirical:** The acronym "TSA," the ASCII airplanes, and the character commentary are used entirely for comedic effect to mock the concept of "security theater" as it applies to software development. All jokes, and absurd warnings are fictional.
+
+* **Use at Your Own Risk:** While the tool checks real `.NET` configuration issues, the authors assume no liability for missed vulnerabilities, disrupted workflows, or hurt feelings. Always practice real security—don't just play theater.
