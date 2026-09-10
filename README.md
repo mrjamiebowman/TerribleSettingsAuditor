@@ -84,20 +84,19 @@ Work in progress... but we want to extend this to generate schemas and do even m
 
 
 ## 📦 NuGet Packages
-TSA.Abstractions: Low-level package for attributes and configuration. (.NET Standard 2.0 for max compatibility)
 
 ### TerribleSettingsAuditor.Core
-Shared logic for adding command-line interface used in validating configuration often used in CI/CD pipelines.    
+* Shared logic for adding command-line interface used in validating configuration often used in CI/CD pipelines.    
 
 ### TerribleSettingsAuditor.Abstractions
-This is the library with attributes that add metadata and help facilitate TSA.
+* Low-level package for attributes and configuration. (.NET Standard 2.0 for max compatibility)
 
-## 📓 Vocabulary   
+## 📓 Attributes   
 We used creative names to distinguish our attributes.
 
-* Baggage – Configuration class the app can carry along.
+* Luggage – Configuration class the app can carry along.
 
-* BaggageItem - Individual configuration property. Can be used to identify secrets.
+* LuggageItem - Individual configuration property. Can be used to identify secrets.
 
 ## Sample
 It's very simple to set up. 
@@ -133,7 +132,7 @@ We'll need to include this.
 // tsa
 builder.AddTerribleSettingsAuditor(s => {
     s.ScreenOnStartup = true;
-    s.AbortScreenFailure = true;
+    s.AbortScreenFailure = false;
 });
 
 var app = builder.Build();
