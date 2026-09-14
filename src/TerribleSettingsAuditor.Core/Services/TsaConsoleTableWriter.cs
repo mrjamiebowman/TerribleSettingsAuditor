@@ -96,15 +96,28 @@ public class TsaConsoleTableWriter : ITsaConsoleTableWriter
 
     private static void WriteFullRow(string message, bool pass = true)
     {
-        if (pass == false)
+        var width = 120;
+
+        try
         {
-            CLI.WriteRed("| " + message);
-            CLI.WriteRed(new string(' ', Console.WindowWidth - message.Length - 3) + "|");
+            width = Console.WindowWidth;
+        }
+        catch (IOException)
+        {
+            // No interactive console available; use a default width.
+        }
+
+        var padding = Math.Max(0, width - message.Length - 3);
+
+        if (pass)
+        {
+            CLI.WriteGreen("| " + message);
+            CLI.WriteGreen(new string(' ', padding) + "|");
         }
         else
         {
-            CLI.WriteGreen("| " + message);
-            CLI.WriteGreen(new string(' ', Console.WindowWidth - message.Length - 3) + "|");
+            CLI.WriteRed("| " + message);
+            CLI.WriteRed(new string(' ', padding) + "|");
         }
 
         Console.WriteLine();
