@@ -54,13 +54,15 @@ internal class CLI
     {
         string[] tsaLines = new[]
         {
+            "Ma’am, your connection string is over 3.4 ounces. Please place it in a clear, quart-sized zip folder or it will be confiscated.",
+            "Sir, this unencrypted password has been randomly selected for additional screening. Please step aside.",
+            "Sir, we detected a minor syntax error. Please remove your shoes, belt, and light jacket before attempting to compile again.",
+            "Ma’am, your configuration file is currently in a boarding group that does not exist. Please wait at the gate.",
             "Sir, your bag just made a noise we’ve only heard in spy movies. Mind stepping over here before it takes off on its own?",
-            "We’re gonna need you to step to the side. Your bag has more white powder than Tony Montana’s desk.",
             "Sir, we saw you sweating like you're smuggling fireworks on the Fourth of July. Quick chat over here?",
             "You’ve been randomly selected by the Wheel of Misfortune™. Please step aside. Yes, again.",
-            "Ma’am, you’re too calm for a 6 a.m. flight. Step over here. We need to know your secrets. And maybe your skincare routine.",
+            "Ma’am, you’re too calm for a 6 a.m. Step over here. We need to know your secrets. And maybe your skincare routine.",
             "Sir, you’re wearing Gucci slides, a Rolex, and 17 gold chains… on Spirit Airlines. Just a quick check to make sure you’re not the plane's new owner.",
-            "Sir, you said 'bomb' seven times while arguing with your mom on FaceTime. Just gonna go ahead and need you to follow us over here. Gently.",
             "Sir, I get it — barefoot is freeing. But this is not a yoga retreat. Let’s talk about hygiene over here.",
             "Sir, your laptop has 47 open tabs, 3 mining scripts, and a crypto wallet. We're just gonna make sure it's not trying to fly itself.",
             "Ma’am, you whispered something about lizard people and 5G at Gate 12. We’re just gonna check your carry-on for tinfoil hats.",
