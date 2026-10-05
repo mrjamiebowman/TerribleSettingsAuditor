@@ -11,7 +11,7 @@ public class TsaConsoleTableWriter : ITsaConsoleTableWriter
 
     }
 
-    private string[] Headers = new[] { "Luggage Item", "Secret", "Expose", "State" };
+    private string[] Headers = new[] { "Luggage Item", "Secret", "Value", "State" };
 
     public void WriteConfigTable(List<ReportItem> reportItems)
     {
