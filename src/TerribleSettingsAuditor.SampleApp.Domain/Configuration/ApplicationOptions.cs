@@ -14,9 +14,9 @@ public class ApplicationOptions
     public bool DebugMode { get; set; } = false;
 
     [Required]
-    [LuggageItem("Application Title")]
+    [LuggageItem("Application Title", Expose = ExposeMethod.Full)]
     public string? Title { get; set; }
 
-    [LuggageItem("DoesntNeedToBeSet")]
+    [LuggageItem("DoesntNeedToBeSet", Expose = ExposeMethod.Full)]
     public bool? DoesntNeedToBeSet { get; set; }
 }
