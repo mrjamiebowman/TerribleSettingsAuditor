@@ -7,7 +7,7 @@ public class TsaConfiguration
     /// <summary>
     ///  This option screens configuration on Startup.
     /// </summary>
-    public bool ScreenOnStartup { get; set; } = true;
+    public bool ScreenOnStartup { get; set; } = false;
 
     /// <summary>
     ///  Abort on Screening fails on Startup 
