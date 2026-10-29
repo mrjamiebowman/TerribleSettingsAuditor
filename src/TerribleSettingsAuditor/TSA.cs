@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Reflection;
-using TerribleSettingsAuditor.Abstractions.Attribute;
+using TerribleSettingsAuditor.Abstractions;
 using TerribleSettingsAuditor.Configuration;
 using TerribleSettingsAuditor.Helpers;
 using TerribleSettingsAuditor.Interfaces;
