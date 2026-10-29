@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Scalar.AspNetCore;
-using TerribleSettingsAuditor.Core;
+using TerribleSettingsAuditor;
 using TerribleSettingsAuditor.SampleApp.Domain.Configuration;
 using TerribleSettingsAuditor.SampleApp.HealthChecks;
 

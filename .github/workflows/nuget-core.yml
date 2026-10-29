@@ -15,7 +15,7 @@ jobs:
 
     env:
       DOTNET_VERSION: '10.0.x'
-      PROJECT_PATH: 'src/TerribleSettingsAuditor.Core/TerribleSettingsAuditor.Core.csproj'
+      PROJECT_PATH: 'src/TerribleSettingsAuditor/TerribleSettingsAuditor.csproj'
 
     steps:
       - name: Checkout

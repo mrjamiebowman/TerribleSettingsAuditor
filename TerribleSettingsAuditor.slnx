@@ -9,10 +9,9 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/TerribleSettingsAuditor.Abstractions/TerribleSettingsAuditor.Abstractions.csproj" />
-    <Project Path="src/TerribleSettingsAuditor.Core/TerribleSettingsAuditor.Core.csproj" />
+    <Project Path="src/TerribleSettingsAuditor/TerribleSettingsAuditor.csproj" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="test/TerribleSettingsAuditor.Core.Tests/TerribleSettingsAuditor.Core.Tests.csproj" />
     <Project Path="test/TerribleSettingsAuditor.Tests.Unit/TerribleSettingsAuditor.Core.Tests.Unit.csproj" />
   </Folder>
   <Folder Name="/_Solution Items/">

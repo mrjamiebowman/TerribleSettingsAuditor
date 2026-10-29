@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TerribleSettingsAuditor.Abstractions.Attribute;
+using TerribleSettingsAuditor.Abstractions;
 
 namespace TerribleSettingsAuditor.SampleApp.Domain.Configuration;
 

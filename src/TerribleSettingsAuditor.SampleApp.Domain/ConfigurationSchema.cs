@@ -1,4 +1,4 @@
-﻿using TerribleSettingsAuditor.Abstractions.Attribute;
+﻿using TerribleSettingsAuditor.Abstractions;
 using TerribleSettingsAuditor.SampleApp.Domain.Configuration;
 
 namespace TerribleSettingsAuditor.SampleApp.Domain;
