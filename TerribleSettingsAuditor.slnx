@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/aspire/">
-    <Project Path="aspire/TSA.SampleApp.AppHost/TSA.SampleApp.AppHost.csproj" />
+    <Project Path="aspire/TerribleSettingsAuditor.AppHost/TerribleSettingsAuditor.AppHost.csproj" />
   </Folder>
   <Folder Name="/sample-app/">
     <Project Path="src/TerribleSettingsAuditor.SampleApp.Domain/TerribleSettingsAuditor.SampleApp.Domain.csproj" />
