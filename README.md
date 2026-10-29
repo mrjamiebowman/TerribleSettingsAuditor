@@ -146,8 +146,8 @@ Configures how Terrible Settings Auditor should operate by default. These can al
 
 | Setting | Default | Description |
 |---|---|---|
-| `MaxMaskedValueLength` | `50` | Max length of a masked (`Padded`) value on the report. |
-| `MaxFullValueLength` | `100` | Max length of a fully exposed (`Full`) value; longer values are truncated with `...`. |
+| `MaxMaskedValueLength` | `30` | Max length of a masked (`Padded`) value on the report. |
+| `MaxFullValueLength` | `50` | Max length of a fully exposed (`Full`) value; longer values are truncated with `...`. |
 
 Set either to `null` or `0` to disable the limit.
 

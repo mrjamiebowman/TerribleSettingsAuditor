@@ -49,7 +49,7 @@ public class TsaConsoleTableWriter : ITsaConsoleTableWriter
 
             if (!String.IsNullOrWhiteSpace(row.Message))
             {
-                WriteFullRow(row.Message ?? string.Empty, row.Pass);
+                WriteFullRow(row.Message ?? string.Empty, widths, row.Pass);
             }
         }
 
@@ -94,33 +94,71 @@ public class TsaConsoleTableWriter : ITsaConsoleTableWriter
         Console.WriteLine();
     }
 
-    private static void WriteFullRow(string message, bool pass = true)
+    private static void WriteFullRow(string message, int[] widths, bool pass = true)
     {
-        var width = 120;
+        // table width minus the outer borders and a space either side ("| " ... " |")
+        int tableWidth = widths.Sum() + widths.Length + 1;
+        int contentWidth = Math.Max(1, tableWidth - 4);
 
-        try
+        foreach (var line in WrapText(message, contentWidth))
         {
-            width = Console.WindowWidth;
+            var text = "| " + line.PadRight(contentWidth) + " |";
+
+            if (pass)
+            {
+                CLI.WriteGreen(text);
+            }
+            else
+            {
+                CLI.WriteRed(text);
+            }
+
+            Console.WriteLine();
         }
-        catch (IOException)
+    }
+
+    private static List<string> WrapText(string text, int width)
+    {
+        var lines = new List<string>();
+        var current = string.Empty;
+
+        foreach (var word in text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
         {
-            // No interactive console available; use a default width.
+            // hard split words that are longer than a full line
+            var remaining = word;
+            while (remaining.Length > width)
+            {
+                if (current.Length > 0)
+                {
+                    lines.Add(current);
+                    current = string.Empty;
+                }
+
+                lines.Add(remaining.Substring(0, width));
+                remaining = remaining.Substring(width);
+            }
+
+            if (current.Length == 0)
+            {
+                current = remaining;
+            }
+            else if (current.Length + 1 + remaining.Length <= width)
+            {
+                current += " " + remaining;
+            }
+            else
+            {
+                lines.Add(current);
+                current = remaining;
+            }
         }
 
-        var padding = Math.Max(0, width - message.Length - 3);
-
-        if (pass)
+        if (current.Length > 0 || lines.Count == 0)
         {
-            CLI.WriteGreen("| " + message);
-            CLI.WriteGreen(new string(' ', padding) + "|");
-        }
-        else
-        {
-            CLI.WriteRed("| " + message);
-            CLI.WriteRed(new string(' ', padding) + "|");
+            lines.Add(current);
         }
 
-        Console.WriteLine();
+        return lines;
     }
 
     private static void WriteRow(string[] values, int[] widths, bool pass = true)
