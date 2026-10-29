@@ -137,7 +137,7 @@ public class TSA : ITSA
                     {
                         // expose: full
                         object? rawValue = prop.GetValue(config);
-                        exposeValue = rawValue?.ToString() ?? "";
+                        exposeValue = MaskingHelper.Truncate(rawValue?.ToString() ?? "", _tsaConfiguration.MaxFullValueLength);
                         expose = true;
                     }
                     else if (baggageAttr?.Expose == ExposeMethod.Padded) 
@@ -152,10 +152,10 @@ public class TSA : ITSA
                         if (isSecret == true) 
                         {
                             // limit "****" in padding.
-                            exposeValue = MaskingHelper.MaskMiddleWithLimits(val, left, right, '*', _tsaConfiguration.DefaultMaxExposeSecretLength);
+                            exposeValue = MaskingHelper.MaskMiddleWithLimits(val, left, right, '*', _tsaConfiguration.MaxMaskedValueLength);
                         } else
                         {
-                            exposeValue = MaskingHelper.MaskMiddle(val, left, right);
+                            exposeValue = MaskingHelper.MaskMiddle(val, left, right, '*', _tsaConfiguration.MaxMaskedValueLength);
                         }
                         
                         expose = true;

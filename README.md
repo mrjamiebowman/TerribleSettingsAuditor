@@ -142,7 +142,14 @@ await app.UseTerribleSettingsAuditorAsync(args)
 ```
 
 #### AddTerribleSettingsAuditor()
-Configures how Terrible Settings Auditor should operate by default.   
+Configures how Terrible Settings Auditor should operate by default. These can also be set in the `TSA` configuration section.
+
+| Setting | Default | Description |
+|---|---|---|
+| `MaxMaskedValueLength` | `50` | Max length of a masked (`Padded`) value on the report. |
+| `MaxFullValueLength` | `100` | Max length of a fully exposed (`Full`) value; longer values are truncated with `...`. |
+
+Set either to `null` or `0` to disable the limit.
 
 #### app.UseTerribleSettingsAuditorAsync(args)
 This line takes command line arguments and processes them to handle running tsa commands against the app.   

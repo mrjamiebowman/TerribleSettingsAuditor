@@ -12,7 +12,11 @@ internal static class MaskingHelper
     {
         if (string.IsNullOrEmpty(value))
         {
-            return new string(maskChar, Math.Max(1, minLength));
+            int emptyLength = maxLength.HasValue && maxLength.Value > 0
+                ? Math.Min(minLength, maxLength.Value)
+                : minLength;
+
+            return new string(maskChar, Math.Max(1, emptyLength));
         }
 
         int requestedLeft = Math.Max(0, showLeft ?? 0);
@@ -109,7 +113,7 @@ internal static class MaskingHelper
         return fullString;
     }
 
-    public static string MaskMiddle(string? value, int? showLeft = null, int? showRight = null, char maskChar = '*')
+    public static string MaskMiddle(string? value, int? showLeft = null, int? showRight = null, char maskChar = '*', int? maxLength = null)
     {
         if (string.IsNullOrEmpty(value))
         {
@@ -118,25 +122,66 @@ internal static class MaskingHelper
 
         int left = Math.Max(0, showLeft ?? 0);
         int right = Math.Max(0, showRight ?? 0);
+        int max = maxLength.HasValue && maxLength.Value > 0 ? maxLength.Value : int.MaxValue;
 
         // If nothing is requested, mask the whole thing
         if (left == 0 && right == 0)
         {
-            return new string(maskChar, value.Length);
+            return new string(maskChar, Math.Min(value.Length, max));
         }
 
         // If the visible counts would expose the whole value, just return it
         if (left + right >= value.Length)
         {
-            return value;
+            return Truncate(value, maxLength);
+        }
+
+        int maskedLength = value.Length - left - right;
+
+        // Shrink the masked section first, then the visible edges, keeping at least one mask char.
+        if (left + maskedLength + right > max)
+        {
+            maskedLength = Math.Max(1, max - left - right);
+
+            while (left + maskedLength + right > max && (left > 0 || right > 0))
+            {
+                if (left >= right)
+                {
+                    left--;
+                }
+                else
+                {
+                    right--;
+                }
+            }
         }
 
         string leftPart = left > 0 ? value.Substring(0, left) : string.Empty;
         string rightPart = right > 0 ? value.Substring(value.Length - right, right) : string.Empty;
 
-        int maskedLength = value.Length - left - right;
         string maskedPart = new string(maskChar, maskedLength);
 
         return $"{leftPart}{maskedPart}{rightPart}";
+    }
+
+    public static string Truncate(string? value, int? maxLength, string ellipsis = "...")
+    {
+        if (value == null || value.Length == 0)
+        {
+            return string.Empty;
+        }
+
+        if (!maxLength.HasValue || maxLength.Value <= 0 || value.Length <= maxLength.Value)
+        {
+            return value;
+        }
+
+        // Too short to fit the ellipsis, hard cut.
+        if (maxLength.Value <= ellipsis.Length)
+        {
+            return value.Substring(0, maxLength.Value);
+        }
+
+        return value.Substring(0, maxLength.Value - ellipsis.Length) + ellipsis;
     }
 }
