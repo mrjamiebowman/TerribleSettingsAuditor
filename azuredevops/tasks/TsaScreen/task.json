@@ -1,0 +1,107 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+  "id": "e2fa5561-656b-452b-b695-860338e105ce",
+  "name": "TerribleSettingsAuditor",
+  "friendlyName": "Terrible Settings Auditor (TSA)",
+  "description": "Screens a .NET app's configuration with TSA (tsa --screen --json) and publishes tsa-report.json to the TSA tab.",
+  "helpMarkDown": "[Learn more](https://github.com/mrjamiebowman/TerribleSettingsAuditor)",
+  "category": "Test",
+  "author": "mrjamiebowman",
+  "version": {
+    "Major": 1,
+    "Minor": 0,
+    "Patch": 0
+  },
+  "minimumAgentVersion": "3.232.1",
+  "instanceNameFormat": "TSA: screen $(path)",
+  "groups": [
+    {
+      "name": "advanced",
+      "displayName": "Advanced",
+      "isExpanded": false
+    }
+  ],
+  "inputs": [
+    {
+      "name": "path",
+      "type": "filePath",
+      "label": "App DLL or executable",
+      "required": true,
+      "helpMarkDown": "Path to the app that references TerribleSettingsAuditor. A `.dll` is run with `dotnet`; anything else is run directly. Minimatch patterns are allowed (e.g. `**/publish/MyApp.dll`) as long as they match exactly one file."
+    },
+    {
+      "name": "noJoke",
+      "type": "boolean",
+      "label": "No Joke",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Passes `--no-joke` so TSA keeps its sense of humour to itself."
+    },
+    {
+      "name": "quiet",
+      "type": "boolean",
+      "label": "Quiet",
+      "defaultValue": "false",
+      "required": false,
+      "helpMarkDown": "Passes `--quiet` to hide the TSA banner."
+    },
+    {
+      "name": "failOnScreeningFailure",
+      "type": "boolean",
+      "label": "Fail the task when screening fails",
+      "defaultValue": "true",
+      "required": false,
+      "helpMarkDown": "When off, a failed screening marks the task as 'succeeded with issues' instead of failed."
+    },
+    {
+      "name": "workingDirectory",
+      "type": "string",
+      "label": "Working directory",
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Directory the app runs in. Defaults to the app's own directory so `appsettings.json` is found."
+    },
+    {
+      "name": "reportPath",
+      "type": "string",
+      "label": "Report file",
+      "defaultValue": "tsa-report.json",
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Where TSA writes its JSON report, relative to the working directory."
+    },
+    {
+      "name": "arguments",
+      "type": "string",
+      "label": "Additional arguments",
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Extra arguments appended after `tsa --screen --json`."
+    },
+    {
+      "name": "timeoutInSeconds",
+      "type": "string",
+      "label": "Timeout (seconds)",
+      "defaultValue": "300",
+      "required": false,
+      "groupName": "advanced",
+      "helpMarkDown": "Kills the app if it hasn't exited by then (e.g. it ignored the `tsa` argument and started serving). 0 disables the timeout."
+    }
+  ],
+  "outputVariables": [
+    {
+      "name": "TsaPassed",
+      "description": "'true' when every screened setting passed, otherwise 'false'."
+    },
+    {
+      "name": "TsaReportPath",
+      "description": "Full path to the tsa-report.json that was published."
+    }
+  ],
+  "execution": {
+    "Node20_1": {
+      "target": "index.js",
+      "argumentFormat": ""
+    }
+  }
+}

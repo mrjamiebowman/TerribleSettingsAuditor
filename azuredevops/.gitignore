@@ -1,0 +1,10 @@
+node_modules/
+dist/
+out/
+*.vsix
+
+# built from src/task
+tasks/TsaScreen/index.js
+
+# written by azure-pipelines-task-lib when running the task locally
+.taskkey

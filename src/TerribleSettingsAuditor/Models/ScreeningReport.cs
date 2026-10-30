@@ -1,4 +1,6 @@
-﻿namespace TerribleSettingsAuditor.Models;
+﻿using System.Text.Json.Serialization;
+
+namespace TerribleSettingsAuditor.Models;
 
 #nullable enable
 
@@ -21,6 +23,7 @@ public class ConfigurationReport
 
     public string? Namespace { get; set; }
 
+    [JsonIgnore]
     public Type? ConfigurationType { get; set; }
 
     public string? Message { get; set; }

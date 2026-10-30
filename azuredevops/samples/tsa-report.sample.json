@@ -1,0 +1,41 @@
+{
+  "Pass": false,
+  "Configuration": [
+    {
+      "Passed": true,
+      "Pinned": false,
+      "Order": 1,
+      "Name": "ApplicationOptions",
+      "Namespace": "TerribleSettingsAuditor.SampleApp.Domain.Configuration",
+      "Message": null,
+      "Properties": [
+        { "BaggageItem": true, "Name": "ApplicationName", "Description": "Display name of the app", "Pass": true, "Message": null, "Required": true, "Secret": false, "Expose": true, "ExposeValue": "Sample App" },
+        { "BaggageItem": true, "Name": "Environment", "Description": "Deployment environment", "Pass": true, "Message": null, "Required": true, "Secret": false, "Expose": true, "ExposeValue": "Staging" }
+      ]
+    },
+    {
+      "Passed": false,
+      "Pinned": false,
+      "Order": 2,
+      "Name": "DatabaseConfiguration",
+      "Namespace": "TerribleSettingsAuditor.SampleApp.Domain.Configuration",
+      "Message": null,
+      "Properties": [
+        { "BaggageItem": true, "Name": "ConnectionStringSampleApp", "Description": "SampleApp Connection String", "Pass": true, "Message": null, "Required": true, "Secret": true, "Expose": true, "ExposeValue": "Server***************************=True" },
+        { "BaggageItem": true, "Name": "ConnectionStringUsersDb", "Description": "UsersDb Connection String", "Pass": false, "Message": "The ConnectionStringUsersDb field is required.", "Required": true, "Secret": true, "Expose": false, "ExposeValue": null }
+      ]
+    },
+    {
+      "Passed": false,
+      "Pinned": true,
+      "Order": null,
+      "Name": "AzureAppConfigOptions",
+      "Namespace": "TerribleSettingsAuditor.SampleApp.Domain.Configuration",
+      "Message": null,
+      "Properties": [
+        { "BaggageItem": true, "Name": "Endpoint", "Description": "Azure App Configuration endpoint", "Pass": false, "Message": "The Endpoint field is not a valid fully-qualified http, https, or ftp URL.", "Required": true, "Secret": false, "Expose": true, "ExposeValue": "not-a-url" },
+        { "BaggageItem": true, "Name": "Label", "Description": "Configuration label filter", "Pass": true, "Message": null, "Required": false, "Secret": false, "Expose": true, "ExposeValue": "staging" }
+      ]
+    }
+  ]
+}

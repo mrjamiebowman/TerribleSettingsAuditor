@@ -1,0 +1,26 @@
+{
+  "name": "tsa-azure-devops",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Azure DevOps extension for Terrible Settings Auditor (TSA): a pipeline task that screens configuration and a build results tab that displays tsa-report.json.",
+  "license": "MIT",
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build:task": "esbuild src/task/index.ts --bundle --platform=node --target=node20 --format=cjs --external:azure-pipelines-task-lib --outfile=tasks/TsaScreen/index.js",
+    "build:task-deps": "npm ci --omit=dev --prefix tasks/TsaScreen",
+    "build:tab": "esbuild src/tab/tab.ts --bundle --platform=browser --target=es2020 --format=iife --minify --outfile=dist/tab/tab.js && node scripts/copy-static.mjs",
+    "build": "npm run typecheck && npm run build:task && npm run build:task-deps && npm run build:tab",
+    "package": "npm run build && tfx extension create --manifest-globs vss-extension.json --output-path out",
+    "package:dev": "npm run build && tfx extension create --manifest-globs vss-extension.json --output-path out --rev-version"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "azure-devops-extension-api": "^5.280.1",
+    "azure-devops-extension-sdk": "^4.2.0",
+    "azure-pipelines-task-lib": "^5.282.0",
+    "esbuild": "^0.24.2",
+    "tfx-cli": "^0.24.2",
+    "typescript": "^5.9.3"
+  }
+}

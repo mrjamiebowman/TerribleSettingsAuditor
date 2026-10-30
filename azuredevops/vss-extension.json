@@ -1,0 +1,55 @@
+{
+  "manifestVersion": 1,
+  "id": "terrible-settings-auditor",
+  "publisher": "mrjamiebowman",
+  "version": "1.0.0",
+  "name": "Terrible Settings Auditor (TSA)",
+  "description": "Screen your .NET app's configuration in the pipeline with TSA and view the screening report in a TSA tab on the run.",
+  "public": false,
+  "categories": ["Azure Pipelines"],
+  "tags": ["configuration", "validation", ".NET", "settings", "TSA"],
+  "targets": [
+    { "id": "Microsoft.VisualStudio.Services" }
+  ],
+  "icons": {
+    "default": "images/logo.png"
+  },
+  "content": {
+    "details": { "path": "overview.md" }
+  },
+  "links": {
+    "repository": { "uri": "https://github.com/mrjamiebowman/TerribleSettingsAuditor" },
+    "support": { "uri": "https://github.com/mrjamiebowman/TerribleSettingsAuditor/issues" }
+  },
+  "repository": {
+    "type": "git",
+    "uri": "https://github.com/mrjamiebowman/TerribleSettingsAuditor"
+  },
+  "scopes": ["vso.build"],
+  "files": [
+    { "path": "tasks/TsaScreen", "addressable": false },
+    { "path": "dist/tab", "addressable": true },
+    { "path": "images", "addressable": true }
+  ],
+  "contributions": [
+    {
+      "id": "tsa-screen-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": ["ms.vss-distributed-task.tasks"],
+      "properties": {
+        "name": "tasks/TsaScreen"
+      }
+    },
+    {
+      "id": "tsa-build-results-tab",
+      "type": "ms.vss-build-web.build-results-tab",
+      "description": "Shows the TSA screening report (tsa-report.json) for a pipeline run.",
+      "targets": ["ms.vss-build-web.build-results-view"],
+      "properties": {
+        "name": "TSA",
+        "uri": "dist/tab/tab.html",
+        "supportsTasks": ["e2fa5561-656b-452b-b695-860338e105ce"]
+      }
+    }
+  ]
+}

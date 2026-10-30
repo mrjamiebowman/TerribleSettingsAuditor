@@ -1,0 +1,11 @@
+{
+  "name": "tsa-screen-task",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Runtime dependencies for the TSA pipeline task. index.js is built from ../../src/task.",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^5.282.0"
+  }
+}

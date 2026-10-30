@@ -416,3 +416,6 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# TSA JSON report (tsa --screen --json)
+tsa-report.json

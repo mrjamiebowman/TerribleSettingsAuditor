@@ -1,0 +1,33 @@
+# Example: publish the app, screen its configuration with TSA, and view the report in the run's TSA tab.
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: UseDotNet@2
+    inputs:
+      version: 10.x
+
+  - script: dotnet publish src/MyApp/MyApp.csproj -c Release -o $(Build.ArtifactStagingDirectory)/app
+    displayName: Publish app
+
+  - task: TerribleSettingsAuditor@1
+    displayName: TSA screening
+    inputs:
+      path: $(Build.ArtifactStagingDirectory)/app/MyApp.dll   # .dll runs via dotnet; .exe/apphost runs directly
+      noJoke: true                                             # --no-joke
+      # quiet: false                                           # --quiet
+      # failOnScreeningFailure: true                           # false = "succeeded with issues"
+      # workingDirectory: $(Build.ArtifactStagingDirectory)/app  # defaults to the app's directory
+      # reportPath: tsa-report.json                            # relative to the working directory
+      # arguments: ''                                          # appended after: tsa --screen --json
+      # timeoutInSeconds: 300
+    env:
+      # settings the app reads at startup can come from pipeline variables/secrets
+      ASPNETCORE_ENVIRONMENT: Staging
+      Database__ConnectionStringSampleApp: $(SampleAppConnectionString)
+
+  - script: echo "TSA passed = $(TsaPassed)"
+    condition: always()

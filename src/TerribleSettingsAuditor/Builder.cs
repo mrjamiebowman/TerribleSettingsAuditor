@@ -141,10 +141,15 @@ public static class Builder
             .Any(x => x.Equals("--no-abort", StringComparison.OrdinalIgnoreCase)
                    || x.Equals("--noabort", StringComparison.OrdinalIgnoreCase));
 
+        bool optionJson = args
+            .Skip(1)
+            .Any(x => x.Equals("--json", StringComparison.OrdinalIgnoreCase));
+
         ScreeningOptions screeningOptions = new ScreeningOptions();
         screeningOptions.NoJoke = optionNoJoke;
         screeningOptions.Quiet = optionQuiet;
         screeningOptions.NoAbort = optionNoAbort;
+        screeningOptions.Json = optionJson;
 
         /****************************************/
         /*             general cli              */
@@ -192,6 +197,14 @@ public static class Builder
 
             // render report
             tsaCli.ShowReport(screeningReport, screeningOptions);
+
+            // --json (ci/cd)
+            if (screeningOptions.Json)
+            {
+                var reportPath = JsonReport.Write(screeningReport);
+                CLI.WriteLineGreen($" 📄 JSON report: {reportPath}");
+                Console.WriteLine("");
+            }
 
             if (screeningOptions.NoAbort)
             {

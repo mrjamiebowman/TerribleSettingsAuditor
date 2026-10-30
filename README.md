@@ -160,6 +160,16 @@ We can now run CLI commands through the `LaunchSettings.json` file or through te
 * `dotnet run MyApp.dll tsa --screen`
 * `MyApp.exe tsa --screen`
 
+| Option | Description |
+|---|---|
+| `--json` | Also writes the screening report to `tsa-report.json` in the current directory, for CI/CD pipelines. |
+| `--no-joke` | Skips the joke. |
+| `--quiet` | Hides the banner. |
+| `--no-abort` | Keeps the app running after screening instead of exiting with `0`/`1`. |
+
+### Azure DevOps
+The [Azure DevOps extension](azuredevops/README.md) adds a `TerribleSettingsAuditor@1` pipeline task. The task runs `tsa --screen --json` and shows `tsa-report.json` in a **TSA** tab on the pipeline run.
+
 ### Screening Report
 This is meant to be a paradoy and to make this process fun.   
 
