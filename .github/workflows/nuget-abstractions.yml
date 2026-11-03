@@ -1,3 +1,4 @@
+
 name: Publish Abstractions NuGet
 
 on:
@@ -12,6 +13,7 @@ jobs:
 
     permissions:
       contents: read
+      id-token: write
 
     env:
       DOTNET_VERSION: '10.0.x'
@@ -41,5 +43,15 @@ jobs:
       - name: Pack
         run: dotnet pack $PROJECT_PATH --configuration Release --no-build --output ./artifacts -p:PackageVersion=$PACKAGE_VERSION
 
+      - name: NuGet Login (Trusted Publishing)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ vars.NUGET_USER }}
+
       - name: Publish to NuGet.org
-        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+        run: |
+          dotnet nuget push "./artifacts/*.nupkg" \
+            --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate
