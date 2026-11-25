@@ -130,10 +130,7 @@ We'll need to include this.
 
 ```csharp
 // tsa
-builder.AddTerribleSettingsAuditor(s => {
-    s.ScreenOnStartup = true;
-    s.AbortScreenFailure = false;
-});
+builder.AddTerribleSettingsAuditor();
 
 var app = builder.Build();
 
