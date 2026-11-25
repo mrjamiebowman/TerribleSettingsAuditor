@@ -9,4 +9,6 @@ var launchProfile = builder.Configuration.GetValue<string>("LAUNCH_PROFILE") ?? 
 // projects
 builder.AddProject<TerribleSettingsAuditor_SampleApp>("api-sampleapp", launchProfile);
 
+builder.AddProject<Projects.TerribleSettingsAuditor_SampleApp_NoTsa>("terriblesettingsauditor-sampleapp-notsa");
+
 builder.Build().Run();

@@ -1,11 +1,14 @@
 <Solution>
-  <Folder Name="/aspire/">
-    <Project Path="aspire/TerribleSettingsAuditor.AppHost/TerribleSettingsAuditor.AppHost.csproj" />
+  <Folder Name="/apps/">
+    <Project Path="src/TerribleSettingsAuditor.SampleApp.NoTsa/TerribleSettingsAuditor.SampleApp.NoTsa.csproj" />
+    <Project Path="src/TerribleSettingsAuditor.SampleApp/TerribleSettingsAuditor.SampleApp.csproj" />
   </Folder>
-  <Folder Name="/sample-app/">
+  <Folder Name="/apps/libraries/">
     <Project Path="src/TerribleSettingsAuditor.SampleApp.Domain/TerribleSettingsAuditor.SampleApp.Domain.csproj" />
     <Project Path="src/TerribleSettingsAuditor.SampleApp.ServiceDefaults/TerribleSettingsAuditor.SampleApp.ServiceDefaults.csproj" />
-    <Project Path="src/TerribleSettingsAuditor.SampleApp/TerribleSettingsAuditor.SampleApp.csproj" />
+  </Folder>
+  <Folder Name="/aspire/">
+    <Project Path="aspire/TerribleSettingsAuditor.AppHost/TerribleSettingsAuditor.AppHost.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/TerribleSettingsAuditor.Abstractions/TerribleSettingsAuditor.Abstractions.csproj" />

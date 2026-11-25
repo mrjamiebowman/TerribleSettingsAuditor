@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.15" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TerribleSettingsAuditor.SampleApp.Domain\TerribleSettingsAuditor.SampleApp.Domain.csproj" />
+    <ProjectReference Include="..\TerribleSettingsAuditor.SampleApp.ServiceDefaults\TerribleSettingsAuditor.SampleApp.ServiceDefaults.csproj" />
+  </ItemGroup>
+
+</Project>

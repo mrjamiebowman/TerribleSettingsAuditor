@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TerribleSettingsAuditor.SampleApp.NoTsa\TerribleSettingsAuditor.SampleApp.NoTsa.csproj" />
     <ProjectReference Include="..\..\src\TerribleSettingsAuditor.SampleApp\TerribleSettingsAuditor.SampleApp.csproj" />
   </ItemGroup>
 
