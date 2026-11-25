@@ -36,9 +36,9 @@ public class TsaCliService : ITsaCliService
         ShowBlock(" 📄 Screening Report");
         Console.WriteLine("");
 
-        // sort & order
-        var reports = screeningReport.Configuration.OrderBy(x => x.Pinned == true)
-                                                   .ThenBy(x => x.Order).ToList();
+        // sort & order: pinned first, then by Order (lowest first); no Order sorts last.
+        var reports = screeningReport.Configuration.OrderByDescending(x => x.Pinned)
+                                                   .ThenBy(x => x.Order ?? int.MaxValue).ToList();
 
         foreach (var item in reports)
         {
