@@ -10,4 +10,8 @@
     <ProjectReference Include="..\TerribleSettingsAuditor.Abstractions\TerribleSettingsAuditor.Abstractions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Validation\" />
+  </ItemGroup>
+
 </Project>

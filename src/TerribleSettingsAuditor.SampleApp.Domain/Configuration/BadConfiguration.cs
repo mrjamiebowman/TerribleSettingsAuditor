@@ -17,4 +17,8 @@ public class BadConfiguration
     [Required]
     [LuggageItem("Bad Setting (Should fail)")]
     public bool? Baddie { get; set; }
+
+    [Required]
+    [LuggageItem]
+    public string? FavoriteUrl { get; set; }
 }

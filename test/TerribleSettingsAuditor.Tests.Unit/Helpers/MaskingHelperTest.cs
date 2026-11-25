@@ -69,9 +69,11 @@ public class MaskingHelperTest
         Assert.StartsWith(new string('a', 25), result);
     }
 
-    [Fact]
-    public void MaskMiddleWithLimits_EmptySecret_RespectsLimit()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    public void MaskMiddleWithLimits_MissingSecret_ReturnsEmpty(string? value)
     {
-        Assert.Equal(new string('*', 50), MaskingHelper.MaskMiddleWithLimits(string.Empty, 25, 0, '*', 50));
+        Assert.Equal(string.Empty, MaskingHelper.MaskMiddleWithLimits(value, 25, 0, '*', 50));
     }
 }

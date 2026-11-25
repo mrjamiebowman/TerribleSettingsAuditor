@@ -3,20 +3,17 @@
 internal static class MaskingHelper
 {
     public static string MaskMiddleWithLimits(
-        string value,
+        string? value,
         int? showLeft = null,
         int? showRight = null,
         char maskChar = '*',
         int? maxLength = null,
         int minLength = 100)
     {
-        if (string.IsNullOrEmpty(value))
+        // A missing value is reported as empty, not as a mask.
+        if (value == null || value.Length == 0)
         {
-            int emptyLength = maxLength.HasValue && maxLength.Value > 0
-                ? Math.Min(minLength, maxLength.Value)
-                : minLength;
-
-            return new string(maskChar, Math.Max(1, emptyLength));
+            return string.Empty;
         }
 
         int requestedLeft = Math.Max(0, showLeft ?? 0);
@@ -115,7 +112,7 @@ internal static class MaskingHelper
 
     public static string MaskMiddle(string? value, int? showLeft = null, int? showRight = null, char maskChar = '*', int? maxLength = null)
     {
-        if (string.IsNullOrEmpty(value))
+        if (value == null || value.Length == 0)
         {
             return string.Empty;
         }
