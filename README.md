@@ -68,7 +68,7 @@ This ultimately means that validating configuration at the source doesn't necess
 We believe that having a tool that can run at multiple steps of the development process will help navigate these issues. For example, local development, CI/CD pipelines, deployments, and on-demand as configuration can change.   
 
 ### .NET DataAnnotations Validation
-This is great, and we want this tool to pair well with this process. However, the downside is that it doesn't return a "report" and only runs at startup.
+This tool pairs with .NET's built-in DataAnnotations validation. This allows developers to use attributes to validate configuration classes and properties. TSA generates a report from this.   
 
 #### Disadvantages
 - Runs on Startup (past deployment gates)
@@ -85,7 +85,7 @@ Work in progress... but we want to extend this to generate schemas and do even m
 
 ## 📦 NuGet Packages
 
-### TerribleSettingsAuditor.Core
+### TerribleSettingsAuditor
 * Shared logic for adding command-line interface used in validating configuration often used in CI/CD pipelines.    
 
 ### TerribleSettingsAuditor.Abstractions
